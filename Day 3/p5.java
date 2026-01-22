@@ -28,7 +28,7 @@ public class p5 {
                 case 1:
                     if (counter == 50) {
                         System.out.println("Student limit reached");
-                        break;
+                        continue;
                     }
 
                     System.out.println(" Enter Details of Students ");
@@ -193,3 +193,4 @@ public class p5 {
     }
 
 }
+
