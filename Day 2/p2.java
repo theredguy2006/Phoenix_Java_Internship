@@ -6,8 +6,8 @@ public class p2 {
         // implemenatation of patterns .
         System.out.println(" Enter How Many Rows you want for both increasing in decreasing triangle ");
         Scanner sc = new Scanner(System.in);
-        // int a = sc.nextInt();
-        int a = 5;
+        int a = sc.nextInt();
+        // int a = 5;
         System.out.println(" Increasing Triangle Till " + a + " Rows ");
         for (int i = 0; i <= a; i++) {
             for (int j = 1; j <= i; j++) {
