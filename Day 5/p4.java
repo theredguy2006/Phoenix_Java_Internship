@@ -7,10 +7,11 @@ public class p4 {
         // First constructors which re directs it too second constructor which redirects
         // it to third.
         // it executes third one then returns to second and so on.
-        manager m = new manager();
+        // manager m = new manager();
         final int a = 30;
         // mainly use for when we want a constant value throughtout the whole program.
         System.out.println(" Final value of a " + a);
+        manager.just();
         // a=20; will give compilation error
         // m.over1();
 
@@ -55,6 +56,12 @@ class person {
 
 }
 
+class anotherPerson {
+
+}
+
+// class employee extends person anotherPerson { This will give error as a class
+// only inherit a single class directly at a time.
 class employee extends person {
 
     @Override
@@ -65,11 +72,19 @@ class employee extends person {
 
 }
 
+// also just because a class is final doesn't mean all it's variables and
+// methods are compulsory final
+
 final class manager extends employee {
 
     void over() {
         super.over();
         System.out.println(" This is over method from manager ");
+    }
+
+    static void just() {
+        System.out.println(
+                " Despite being in a final class that cannot be extended it can be called without creating a object ");
     }
 
     // @Override
