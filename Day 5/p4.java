@@ -120,3 +120,7 @@ final class manager extends employee {
 // means that it cannot be inherited.
 
 // "abstract" & "synchronized":will learn later
+
+
+// Completed the mini task of hierachy with proper inheritance in p1 and p2 program in the form of 
+// grandFather-->Father--->Son  
