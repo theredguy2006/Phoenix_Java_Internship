@@ -10,7 +10,8 @@ public class p1 {
         // car ca = new car("ford");
         // System.out.println("The name of the car is " + ca.getName());
         // ca.noOfWheels(4);
-        // ca.noChange(); // This can work with no issue as we calling it via car and not changing it.
+        // ca.noChange(); // This can work with no issue as we calling it via car and
+        // not changing it.
 
     }
 }
@@ -45,13 +46,14 @@ abstract class vehicle {
     }
 
     final void noChange() {
-        System.out.println("This is a final method. "+name);
+        System.out.println("This is a final method. " + name);
     }
 
     abstract void rims();
-    // this is just a place holder. 
+    // this is just a place holder.
 
-    // So what i am doin here is creating an method that won't be implemented by car.
+    // So what i am doin here is creating an method that won't be implemented by
+    // car.
     // This will give error. So what we can do prevent is.
     // make car an abstact class too .
     // then implement that method in tyre.
@@ -59,7 +61,7 @@ abstract class vehicle {
 }
 
 abstract class car extends vehicle {
-// class car extends vehicle {
+    // class car extends vehicle {
     String name;
     int a;
 
@@ -88,8 +90,9 @@ abstract class car extends vehicle {
 
     // abstract void error()
     // {
-    //     // Also this will compile error 
-    //     System.out.println(" This won't work and give error because if a class has a single abstact method it should be made abstract .");
+    // // Also this will compile error
+    // System.out.println(" This won't work and give error because if a class has a
+    // single abstact method it should be made abstract .");
     // }
 
 }
@@ -101,8 +104,23 @@ class tyre extends car {
         super(name);
     }
 
-    void rims()
-    {
+    void rims() {
         System.out.println("this is rims. ");
     }
 }
+
+
+// Why do we use abtract classes really ??
+// Answer : well the technical answer is that when we need a blueprint that should be 100% followed by the child class.
+// like we need some methods that are gonna be used again and again in so it makes sense to create abstract class.
+// the analogy i read online explains it best.
+// we know all humans greet but we don't how they are gonna greet whether it can be namaste or hola amigo. we don't know for sure 
+// what we do know is that humans will greet for sure.
+// so we create an abstract class human whose child class will be let's indian 
+// so how will an indian greet someone most probably by saying namaste.
+// now we create an american class. how will he greet someone by saying hello.  
+
+// Why do abstact class have constructor despite never being instantiated ??
+// Ans: Constructors are used sometimes to initialize values or instance
+// variables. Also it can be used to ensure that the child classes also follow
+// this pattern when they will be instantiated
