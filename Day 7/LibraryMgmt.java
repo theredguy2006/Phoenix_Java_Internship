@@ -2,11 +2,13 @@
 import java.util.Scanner;
 
 public class LibraryMgmt {
-    static Member[] m = new Member[10];
-    static PremiumMember[] pm = new PremiumMember[5];
+    static Member[] m = new Member[5];
+    static PremiumMember[] pm = new PremiumMember[2];
+    static Book[] bo = new Book[5];
     static Scanner sc = new Scanner(System.in);
     static int mi = 3;
     static int pi = 0;
+    static int bi = 0;
 
     public static void main(String[] args) {
         int a = 0;
@@ -14,33 +16,38 @@ public class LibraryMgmt {
         m[0] = new Member("Kaif", 1234);
         m[1] = new Member("Kaif2", 1234);
         m[2] = new Member("Kaif3", 1234);
+        bo[0] = new Book("Anxious People", "Freidrick Backaman ", bi++);
+        bo[1] = new Book("Project Hail Mary ", "Andy Weir ", bi++);
+        bo[3] = new Book("The Shining ", "Stephen King ", bi++);
 
         do {
             System.out.println("Press 1 to Login ");
             System.out.println("Press 2 to Regsister ");
             a = sc.nextInt();
-            if (a == 1) {
-                login();
+            switch (a) {
+                case 1:
+                    login();
+                    break;
+                case 2:
+                    Regsister();
+                    break;
+                default:
+                    System.out.println("Non Premium Members ");
+                    for (Member i : m) {
+                        if (i == null)
+                            continue;
 
-            } else if (a == 2) {
-                Regsister();
-            } else {
-                System.out.println("Non Premium Members ");
-                for (Member i : m) {
-                    if (i == null)
-                        continue;
+                        System.out.println("Name--> " + i.Name);
+                        System.out.println("PWD--> " + i.pwd);
+                    }
+                    for (PremiumMember i : pm) {
+                        if (i == null)
+                            continue;
 
-                    System.out.println("Name--> " + i.Name);
-                    System.out.println("PWD--> " + i.pwd);
-                }
-                for (PremiumMember i : pm) {
-                    if (i == null)
-                        continue;
-
-                    System.out.println("Name-->" + i.Name);
-                    System.out.println("PWD-->" + i.pwd);
-                }
-
+                        System.out.println("Name-->" + i.Name);
+                        System.out.println("PWD-->" + i.pwd);
+                    }
+                    break;
             }
         } while (a != 3);
         sc.close();
@@ -111,7 +118,10 @@ public class LibraryMgmt {
     }
 
     static void Menu() {
-        System.out.println("Work In Progress ");
+        System.out.println("1.) Issue a book ");
+        System.out.println("2.) Donate a book ");
+        System.out.println("3.) Check which book you have borrowed  ");
+        System.out.println("4.) Exit  ");
     }
 }
 
@@ -140,6 +150,22 @@ class PremiumMember extends Member {
         this.Name = name;
         this.pwd = pwd;
         this.isPremium = true;
+    }
+
+}
+
+class Book {
+
+    String bookName;
+    String authorName;
+    int bookID;
+    boolean isBorrowed;
+    int borrowedBy;
+
+    public Book(String bookName, String authorName, int bookID) {
+        this.bookName = bookName;
+        this.authorName = authorName;
+        this.bookID = bookID;
     }
 
 }
