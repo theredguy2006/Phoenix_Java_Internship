@@ -177,7 +177,6 @@ class PremiumMember {
         for (Book i : bPM) {
             if (i == null)
                 continue;
-            ;
             System.out.println("Name--> " + i.bookName);
             System.out.println("Author Name --> " + i.authorName);
             System.out.println("Book Id --> " + i.bookID);
@@ -256,7 +255,7 @@ class PremiumMember {
     }
 
     void donateBook() {
-        if (lm.bID < booksTaken.length) {
+        if (lm.bID < bPM.length) {
             System.out.println("Enter Name of the book you wanna donate ?");
             String t = sc.next();
             System.out.println("Enter Author's Name of the book you wanna donate ?");
@@ -320,7 +319,7 @@ class Member extends PremiumMember {
                     bookTaken = new Book(i.bookName, i.authorName, i.bookID);
                     bookTaken.borrowedBy = this.Name;
                     i.isBorrowed = true;
-                    s = true;
+                    taken = true;
                     break;
                 }
             }
