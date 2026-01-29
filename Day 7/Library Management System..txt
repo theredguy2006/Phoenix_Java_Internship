@@ -1,0 +1,18 @@
+Library Management System.
+What do i want to do ??
+1.) User Logs in. Enter his/her username and then it verifies and also differentiate whether they are premium user or not. Premium User gets more extra books to borrow.
+2.) User gets a menu that you can borrow a book. Donate a book. Check which books are available . Check which books they have borrowed and also display how many more they can. Logout option.
+
+What do i need to follow and use.
+1.)Interface
+2.)Inheritance.
+3.)Abstraction.
+
+How am i Gonna do it ??
+1.) Some Data will already be hard coded. Like 3 for Members and 2 for Premium Members.3 Books will be too.
+Total Books-->10
+Total Members-->5-->Memeber and 3 or 2---> Premium Members.
+2.) Username will be unique so they can be used as ID simultaneously.
+3.) Books will need ID. How am i gonna manage that. Create a book id counter in the main and use it. Since i only the need the id and just to initialize it and not much.
+4.) How will i manage the books taken. I can store the id's in a array and do it guess ??
+5.) Same to track which user has taken which books and all.
