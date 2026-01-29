@@ -1,4 +1,256 @@
+import java.util.Scanner;
 
+class LibraryMgmt{
+    static Scanner sc = new Scanner(System.in);
+    static int bID = 0;
+    static int mID = 0;
+    static int pID = 0;
+
+    public static void main(String[] args) {
+
+        Member[] members = new Member[5];
+        PremiumMember[] premiumMembers = new PremiumMember[3];
+        Book[] books = new Book[5];
+
+        members[mID++] = new Member("Kaif", 1234);
+        members[mID++] = new Member("Kaif2", 1234);
+        members[mID++] = new Member("Kaif3", 1234);
+
+        books[bID] = new Book("Anxious People", "Frederick Backman", bID++);
+        books[bID] = new Book("Project Hail Mary", "Andy Weir", bID++);
+        books[bID] = new Book("The Shining", "Stephen King", bID++);
+        books[bID] = new Book("Normal People", "Sally Rooney", bID++);
+
+        premiumMembers[pID++] = new PremiumMember("PKaif2", 1234);
+        premiumMembers[pID++] = new PremiumMember("PKaif3", 1234);
+
+        int choice;
+
+        do {
+            System.out.println("\nPress 1 to Login");
+            System.out.println("Press 2 to Register");
+            System.out.println("Press 3 to Exit");
+
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1 -> login(members, premiumMembers, books);
+                case 2 -> register(members, premiumMembers);
+                case 3 -> System.out.println("Exiting...");
+                default -> System.out.println("Invalid option");
+            }
+
+        } while (choice != 3);
+    }
+
+    static void login(Member[] m, PremiumMember[] pm, Book[] books) {
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        int pwd = sc.nextInt();
+        sc.nextLine();
+
+        for (Member i : m) {
+            if (i != null && i.Name.equals(name) && i.pwd == pwd) {
+                System.out.println("Login Successful");
+                i.menu(books);
+                return;
+            }
+        }
+
+        for (PremiumMember i : pm) {
+            if (i != null && i.Name.equals(name) && i.pwd == pwd) {
+                System.out.println("Login Successful");
+                i.menu(books);
+                return;
+            }
+        }
+
+        System.out.println("Invalid credentials");
+    }
+
+    static void register(Member[] m, PremiumMember[] pm) {
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        int pwd = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Press 1 for Premium, any other key for Normal");
+        int c = sc.nextInt();
+        sc.nextLine();
+
+        if (c == 1 && pID < pm.length) {
+            pm[pID++] = new PremiumMember(name, pwd);
+        } else if (mID < m.length) {
+            m[mID++] = new Member(name, pwd);
+        } else {
+            System.out.println("Registration full");
+        }
+    }
+}
+
+/* ================= MEMBERS ================= */
+
+class PremiumMember {
+    String Name;
+    int pwd;
+    Book[] taken = new Book[3];
+    int count = 0;
+
+    PremiumMember(String n, int p) {
+        Name = n;
+        pwd = p;
+    }
+
+    void menu(Book[] books) {
+        int ch;
+        do {
+            System.out.println("\n1. My Books");
+            System.out.println("2. View Books");
+            System.out.println("3. Borrow Book");
+            System.out.println("4. Donate Book");
+            System.out.println("5. Logout");
+
+            ch = LibraryMgmt.sc.nextInt();
+            LibraryMgmt.sc.nextLine();
+
+            switch (ch) {
+                case 1 -> showTaken();
+                case 2 -> showBooks(books);
+                case 3 -> borrow(books);
+                case 4 -> donate(books);
+            }
+
+        } while (ch != 5);
+    }
+
+    void showBooks(Book[] books) {
+        for (Book b : books) {
+            if (b != null) {
+                System.out.println(b);
+            }
+        }
+    }
+
+    void borrow(Book[] books) {
+        if (count >= taken.length) {
+            System.out.println("Limit reached");
+            return;
+        }
+
+        showBooks(books);
+        System.out.print("Enter Book ID: ");
+        int id = LibraryMgmt.sc.nextInt();
+        LibraryMgmt.sc.nextLine();
+
+        for (Book b : books) {
+            if (b != null && b.bookID == id && !b.isBorrowed) {
+                b.isBorrowed = true;
+                b.borrowedBy = Name;
+                taken[count++] = b;
+                System.out.println("Book Issued");
+                return;
+            }
+        }
+
+        System.out.println("Invalid ID");
+    }
+
+    void donate(Book[] books) {
+        if (LibraryMgmt.bID >= books.length) {
+            System.out.println("LibraryMgmt full");
+            return;
+        }
+
+        System.out.print("Book Name: ");
+        String n = LibraryMgmt.sc.nextLine();
+
+        System.out.print("Author: ");
+        String a = LibraryMgmt.sc.nextLine();
+
+        books[LibraryMgmt.bID] = new Book(n, a, LibraryMgmt.bID++);
+        System.out.println("Book donated");
+    }
+
+    void showTaken() {
+        if (count == 0) {
+            System.out.println("No books taken");
+            return;
+        }
+        for (Book b : taken) {
+            if (b != null) System.out.println(b);
+        }
+    }
+}
+
+class Member extends PremiumMember {
+    Book takenBook;
+    boolean hasBook = false;
+
+    Member(String n, int p) {
+        super(n, p);
+    }
+
+    @Override
+    void borrow(Book[] books) {
+        if (hasBook) {
+            System.out.println("Already borrowed one book");
+            return;
+        }
+
+        showBooks(books);
+        System.out.print("Enter Book ID: ");
+        int id = LibraryMgmt.sc.nextInt();
+        LibraryMgmt.sc.nextLine();
+
+        for (Book b : books) {
+            if (b != null && b.bookID == id && !b.isBorrowed) {
+                b.isBorrowed = true;
+                b.borrowedBy = Name;
+                takenBook = b;
+                hasBook = true;
+                System.out.println("Book Issued");
+                return;
+            }
+        }
+
+        System.out.println("Invalid ID");
+    }
+
+    @Override
+    void showTaken() {
+        if (!hasBook) {
+            System.out.println("No book taken");
+        } else {
+            System.out.println(takenBook);
+        }
+    }
+}
+
+/* ================= BOOK ================= */
+
+class Book {
+    String bookName;
+    String authorName;
+    int bookID;
+    boolean isBorrowed = false;
+    String borrowedBy;
+
+    Book(String n, String a, int id) {
+        bookName = n;
+        authorName = a;
+        bookID = id;
+    }
+
+    public String toString() {
+        return "ID: " + bookID + " | " + bookName + " by " + authorName +
+               (isBorrowed ? " (Borrowed by " + borrowedBy + ")" : " (Available)");
+    }
+}
 
 // import java.util.Scanner;
 
