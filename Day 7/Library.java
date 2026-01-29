@@ -18,11 +18,11 @@ public class Library {
 }
 
 interface searchable {
-    void menu();
+    void menu(Member m);
 
-    void login();
+    void login(Member m);
 
-    void register();
+    void register(Member m);
 
     void borrowBook();
 
@@ -51,11 +51,11 @@ class PremiumMember implements searchable {
     public PremiumMember(String name, int pwd) {
         this.Name = name;
         this.pwd = pwd;
-        this.isPremium = false;
+        this.isPremium = true;
     }
 
     @Override
-    public void login() {
+    public void login(Member m) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -80,7 +80,7 @@ class PremiumMember implements searchable {
     }
 
     @Override
-    public void menu() {
+    public void menu(Member m) {
         System.out.println("Welcome to Red's Library ");
         System.out.println("Press 1.) To Login ");
         System.out.println("Press 2.) To Register ");
@@ -92,11 +92,11 @@ class PremiumMember implements searchable {
         int key = sc.nextInt();
         switch (key) {
             case 1:
-                this.login();
+                this.login(m);
 
                 break;
             case 2:
-                this.register();
+                this.register(m);
                 break;
 
             default:
@@ -106,7 +106,7 @@ class PremiumMember implements searchable {
     }
 
     @Override
-    public void register() {
+    public void register(Member m) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
