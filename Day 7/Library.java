@@ -1,9 +1,7 @@
-
-import java.lang.reflect.Array;
 import java.util.Scanner;
 
-public class Library {
-    static Scanner sc = new Scanner(System.in);
+class Library {
+    static Scanner sc1 = new Scanner(System.in);
     static int bID = 0; // And id variable to count and tack book's id.
     static int pID = 0; // And id variable to count and tack book's id.
     static int mID = 0; // And id variable to count and tack book's id.
@@ -14,7 +12,8 @@ public class Library {
         int a = 0;
         PremiumMember[] pm = new PremiumMember[3];
         Book[] bo = new Book[5];
-        int bUnavailable[] = new int[Array.getLength(bo)]; // an array to track which books are taken.
+        // int bUnavailable[] = new int[Array.getLength(bo)]; // an array to track which
+        // books are taken.
         m[mID++] = new Member("Kaif", 1234);
         m[mID++] = new Member("Kaif2", 1234);
         m[mID++] = new Member("Kaif3", 1234);
@@ -28,11 +27,11 @@ public class Library {
         do {
             System.out.println("Press 1 to Login ");
             System.out.println("Press 2 to Regsister ");
-            a = sc.nextInt();
+            a = sc1.nextInt();
             switch (a) {
                 case 2:
                     System.out.println("Enter Your Name ");
-                    name = sc.next();
+                    name = sc1.next();
                     boolean userExist = false;
                     for (Member i : m) {
                         if (i == null)
@@ -56,10 +55,10 @@ public class Library {
                     }
                     if (!userExist) {
                         System.out.println("Enter Your Password(Numeric Only)");
-                        int b = sc.nextInt();
+                        int b = sc1.nextInt();
                         System.out.println(
                                 "Do you want to be a premium user ? \n Press 1.) For Yes \n Press Other Number for No ");
-                        int c = sc.nextInt();
+                        int c = sc1.nextInt();
                         if (c == 1) {
                             pm[pID++] = new PremiumMember(name, b);
                         } else {
@@ -70,9 +69,9 @@ public class Library {
                     break;
                 case 1:
                     System.out.println("Enter Your Name  ");
-                    name = sc.next();
+                    name = sc1.next();
                     System.out.println("Enter Your Password  ");
-                    int pwd = sc.nextInt();
+                    int pwd = sc1.nextInt();
                     for (Member i : m) {
                         if (i == null)
                             continue;
@@ -135,7 +134,7 @@ class PremiumMember {
     // Counter to check how many books taken.
     int pwd;
     Book[] bPM;
-    Scanner sc = new Scanner(System.in);
+    // Scanner sc = new Scanner(System.in);
     Library lm = new Library();
 
     public PremiumMember(String name, int pwd) {
@@ -152,7 +151,8 @@ class PremiumMember {
             System.out.println("Press 3.) To Donate a Book  ");
             System.out.println("Press 4.) To Borrow a Book  ");
             System.out.println("Press 5.) To Logout ");
-            key = sc.nextInt();
+            key = Library.sc1.nextInt();
+            Library.sc1.nextLine();
             switch (key) {
                 case 1:
                     booksTaken();
@@ -166,8 +166,11 @@ class PremiumMember {
                 case 4:
                     takeBook();
                     break;
+                case 5:
+                    System.out.println("You are logging out ");
+                    break;
                 default:
-                    throw new AssertionError();
+                    System.out.println("Please select from the above option. ");
             }
 
         } while (key != 5);
@@ -227,7 +230,8 @@ class PremiumMember {
             }
 
             System.out.println("Enter Id of the Book you want ");
-            int boName = sc.nextInt();
+            int boName = Library.sc1.nextInt();
+            Library.sc1.nextLine();
             boolean s = false;
 
             for (Book i : bPM) {
@@ -238,16 +242,18 @@ class PremiumMember {
                     booksTaken[btCounter] = new Book(i.bookName, i.authorName, i.bookID);
                     booksTaken[btCounter].borrowedBy = this.Name;
                     i.isBorrowed = true;
+                    i.borrowedBy = this.Name;
                     btCounter++;
                     s = true;
                     break;
                 }
             }
 
-            if (s)
+            if (s) {
                 System.out.println("Book Issued Successfully ");
-            else
-                System.out.println("Unfortunately there was some error , please try again ");
+            } else {
+                System.out.println("Invalid Book ID");
+            }
 
         } else {
             System.out.println("You have exceeded the no of books you can take please return one of them ");
@@ -256,10 +262,11 @@ class PremiumMember {
 
     void donateBook() {
         if (lm.bID < bPM.length) {
+            Library.sc1.nextLine();
             System.out.println("Enter Name of the book you wanna donate ?");
-            String t = sc.next();
+            String t = Library.sc1.nextLine();
             System.out.println("Enter Author's Name of the book you wanna donate ?");
-            String y = sc.next();
+            String y = Library.sc1.nextLine();
             bPM[lm.bID] = new Book(t, y, lm.bID++);
         } else {
             System.out.println("Thank You For Efforts ");
@@ -308,7 +315,8 @@ class Member extends PremiumMember {
             }
 
             System.out.println("Enter Id of the Book you want ");
-            int boName = sc.nextInt();
+            int boName = Library.sc1.nextInt();
+            Library.sc1.nextLine();
             boolean s = false;
 
             for (Book i : bPM) {
@@ -317,7 +325,7 @@ class Member extends PremiumMember {
 
                 if (boName == i.bookID) {
                     bookTaken = new Book(i.bookName, i.authorName, i.bookID);
-                    bookTaken.borrowedBy = this.Name;
+                    i.borrowedBy = this.Name;
                     i.isBorrowed = true;
                     taken = true;
                     break;
@@ -354,6 +362,5 @@ class Book {
         sb.append('}');
         return sb.toString();
     }
-    
 
 }
