@@ -13,7 +13,8 @@ public class p1 {
             // error here. So what would happen is that since we are in try block . it will
             // search for the nearest and familiar exception it can find in the multiple
             // catch blocks and then execute the catch block and instead of returning in the
-            // try block. it will move ahead to the next part of the code out side of the try catch.
+            // try block. it will move ahead to the next part of the code out side of the
+            // try catch.
             // int c = a / b;
             int d1 = d[10];
             System.out.println("This is kinda unreachable as there will be an error in the above line  ");
@@ -57,17 +58,46 @@ public class p1 {
 // Unchecked Exception: These mainly occur at run time and they programmer
 // doesn't need to explicitly mention or implement them
 
-// An example for each of them. 
-// For un checked exception there is this whole program. It is full of un checked. 
+// An example for each of them.
+// For un checked exception there is this whole program. It is full of un
+// checked.
 
-// now let's say instead of using Scanner , i used parse to get input from user but i didn't pass the input at the compile. So to avoid them we do . 
+// now let's say instead of using Scanner , i used parse to get input from user
+// but i didn't pass the input at the compile. So to avoid them we do .
 
 // public static void main(String[] args) {
-//     try {
-//          int a=Integer.parseInt(args[0]);
-//     } catch (Exception e) {
-//        System.out.println("The Error is "+e);
-//        a=10;
-//     }
-   
+// try {
+// int a=Integer.parseInt(args[0]);
+// } catch (Exception e) {
+// System.out.println("The Error is "+e);
+// a=10;
 // }
+
+// }
+
+// These are the examples of exceptions in java
+
+// Unchecked Exception List
+// ArrayIndexOutOfBoundsException
+// ClassCastException
+// IllegalArgumentException
+// IllegalStateException
+// NullPointerException
+// NumberFormatException
+// AssertionError
+// ExceptionInInitializerError
+// StackOverflowError
+// NoClassDefFoundError
+
+// Checked Exception List
+
+// Exception
+// IOException
+// FileNotFoundException
+// ParseException
+// ClassNotFoundException
+// CloneNotSupportedException
+// InstantiationException
+// InterruptedException
+// NoSuchMethodException
+// NoSuchFieldException
