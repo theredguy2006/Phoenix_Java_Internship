@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class p2 {
@@ -7,35 +8,51 @@ public class p2 {
         boolean m = true;
         int a;
         BankAccount ab = new BankAccount(10000, "Kaif ", "Why not ");
+
         do {
-            menu();
-            int m1 = sc.nextInt();
-            switch (m1) {
-                case 1:
-                    System.out.println(" Enter amount you want to desposit ");
-                    a = sc.nextInt();
-                    ab.deposit(a);
-                    break;
-                case 2:
-                    System.out.println(" Enter amount you want to withdraw  ");
-                    a = sc.nextInt();
-                    ab.withdraw(a);
+            try {
+                menu();
+                int m1 = sc.nextInt();
+                switch (m1) {
+                    case 1:
+                        try {
+                            System.out.println(" Enter amount you want to Deposit  ");
+                            a = sc.nextInt();
+                            ab.deposit(a);
+                        } catch (customException ce) {
+                            // this will bring the message instead of the error.
+                            System.out.println(ce.getMessage());
+                        }
+                        break;
+                    case 2:
+                        try {
+                            System.out.println(" Enter amount you want to withdraw  ");
+                            a = sc.nextInt();
+                            ab.withdraw(a);
+                        } catch (customException ce) {
+                            System.out.println(ce);
+                        }
 
-                    break;
-                case 3:
-                    System.out.println(
-                            " Account Holder's Name " + ab.getName() + " Current Balance " + ab.getOrCheckBalance());
+                        break;
+                    case 3:
+                        System.out.println(
+                                " Account Holder's Name " + ab.getName() + " Current Balance "
+                                        + ab.getOrCheckBalance());
 
-                    break;
-                case 4:
-                    System.out.println(" You are exiting Bye !!! ");
-                    m = false;
-                    break;
-                default:
-                    System.out.println(" Enter Value from the menu .");
-                    break;
+                        break;
+                    case 4:
+                        System.out.println(" You are exiting Bye !!! ");
+                        m = false;
+                        break;
+                    default:
+                        System.out.println(" Enter Value from the menu .");
+                        break;
+                }
+            } catch (InputMismatchException im) {
+                System.out.println("Input error Please Enter Numeric Value ");
+                System.out.println("What is ????");
+                sc.nextLine();
             }
-
         } while (m);
 
     }
@@ -51,36 +68,33 @@ public class p2 {
 }
 
 class BankAccount {
-    // balance and name are attributes of this class.
     int balance;
     String name;
 
-    static String bankname; // nothing much use of this just to see and work with satic variables.
-    // The above following is a instance variable it can be used throughout the
-    // class.
+    static String bankname;
 
-    // this is constructor here we will initalize our attributes for that particular
-    // class.
-
-    // Here "a" is a parameter or argument
-    // Kinda like setting mthod. if we remove the adding part an sop portion.
-    public void deposit(int a) {
+    public void deposit(int a) throws customException {
+        if (a < 0) {
+            throw new customException("You can't deposit -ve valueor amount ");
+        }
         this.balance += a;
         System.out.println("Your Balance is " + this.balance);
 
     }
 
-    // Not necessarily a setter method but it is kind of like this.
     public BankAccount(int balance, String name, String bankname) {
         this.balance = balance;
         this.name = name;
-        bankname = bankname;
+        this.bankname = bankname;
     }
 
-    public void withdraw(int a) {
+    public void withdraw(int a) throws customException {
         System.out.println("Your Balance was " + this.balance);
-        if (a > this.balance) {
-            System.out.println(" You do not have enough balance!! " + this.balance);
+        if (a > this.balance || a < 0) {
+            // throw customException(); this will give error as we can't just throw and
+            // error cause the customException has a parametred constructor
+            // the "new" is imp as if do not write it will raise an error. cause we need to
+            throw new customException("Throwing the Custom Exception for withdrawing more money than you have .");
         } else {
 
             this.balance -= a;
@@ -113,3 +127,21 @@ class BankAccount {
 // and we should avoid that.
 // instead we should write the multiple exception based on the actual content of
 // the class or method.
+
+// Custom exceptions in java.
+// Basically we can create our own custom exceptions in java by.
+
+class customException extends Exception // Or Runtime depending on requirment
+{
+
+    public customException(String message) {
+        super(message);
+    }
+
+}
+
+// What are the best practices for using exception handling.
+// 1.) Use specific excpetion instead of just exception e.
+// 2.) Do not just write empty catch blocks to hide the error/exception
+// 3.)Use fianlly too if required to document and clean up code.
+// 4.) Create custom exception only when you need a specific info or use case.
