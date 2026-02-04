@@ -68,6 +68,7 @@ public class Bank implements Transactable {
             } catch (InputMismatchException ie) {
                 System.out.println("Please Enter Proper Responses " + ie);
                 ie.getStackTrace();
+                Main.sc.nextLine();
             }
 
         } while (bm != 5);

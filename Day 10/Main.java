@@ -23,6 +23,7 @@ public class Main {
         sc.close();
     }
 
+    @SuppressWarnings("UnnecessaryContinue")
     static void menu(HashSet<Integer> hs, HashMap<Integer, Current> hm) {
         int menu = 0;
         int id = 0;
@@ -30,99 +31,80 @@ public class Main {
 
         do {
             try {
-                if (id == 0) {
-                    System.out.println("Please Enter Your Account Id ");
-                    id = sc.nextInt();
-                }
+                System.out.println("Press 1 to Login ");
+                System.out.println("Press 2 to Register  ");
+                System.out.println("Press 3 to Exit ");
+                menu = sc.nextInt();
+                switch (menu) {
+                    case (1) -> {
+                        System.out.println("Please Enter Your Account Id ");
+                        id = sc.nextInt();
+                        System.out.println("Please Enter Your Password ");
+                        pwd = sc.nextInt();
+                        if (hs.contains(id)) {
+                            Current user = hm.get(id);
+                            if (user != null && user.getPwd() == pwd) {
+                                System.out.println("Login Successful ");
+                                System.out.println("Details of Your account " + user);
+                                Bank bank = new Bank(user, () -> {
+                                    try {
+                                        saveAllUsers(hm);
+                                    } catch (IOException e) {
+                                        System.out.println("Auto-save failed: " + e);
+                                    }
+                                });
+                                bank.Bmenu();
 
-                if (pwd == 0) {
-                    System.out.println("Please Enter Your Password ");
-                    pwd = sc.nextInt();
-                }
-
-                if (hs.contains(id)) {
-                    Current user = hm.get(id);
-
-                    // ✅ PASSWORD VERIFICATION FIX
-                    if (user != null && user.getPwd() == pwd) {
-                        System.out.println("Login Successful ");
-                        System.out.println("Details of Your account " + user);
-                        Bank bank = new Bank(user, () -> {
-                            try {
-                                saveAllUsers(hm);
-                            } catch (IOException e) {
-                                System.out.println("Auto-save failed: " + e);
+                            } else {
+                                System.out.println("Invalid Password ");
+                                System.out.println("You can press 3 to exit. ");
+                                System.out.println("You can press 2 to Register  ");
                             }
-                        });
-                        bank.Bmenu();
-                    } else {
-                        System.out.println("Invalid Password");
-                        // id = 0;
-                        pwd = 0;
+
+                        } else {
+                            System.out.println("Incorrect Account id ");
+                        }
                     }
+                    case (2) -> {
 
-                } else {
-                    System.out.println("Account not found. ");
-                    System.out.println("Do you want to try again or Create a new account ? ");
-                    System.out.println("Press 1.) To Try again 2.) Create new account 3.) Exit  ");
-                    menu = sc.nextInt();
+                        System.out.println("Please Enter Your Name ");
+                        String Cname = sc.nextLine();
 
-                    switch (menu) {
-                        case 1 -> {
-                            id = 0;
-                            pwd = 0;
-                        }
+                        System.out.println("Please Enter Your Password  ");
+                        int Cpass = sc.nextInt();
 
-                        case 3 -> {
-                            saveAllUsers(hm);
-                            System.out.println("You are exiting Bye Bye ");
-                            break;
-                        }
+                        Random rn = new Random();
+                        int Cuid;
 
-                        case 2 -> {
-                            sc.nextLine(); // ✅ consume leftover newline
+                        do {
+                            Cuid = rn.nextInt(1000);
+                        } while (hs.contains(Cuid));
 
-                            System.out.println("Please Enter Your Name ");
-                            String Cname = sc.nextLine();
+                        int Caid = rn.nextInt(1000);
 
-                            System.out.println("Please Enter Your Password  ");
-                            int Cpass = sc.nextInt();
+                        if (hs.add(Cuid)) {
+                            System.out.println("Assuming you have 1000rs in Account ");
 
-                            Random rn = new Random();
-                            int Cuid;
-
-                            // ✅ RANDOM ID COLLISION FIX
-                            do {
-                                Cuid = rn.nextInt(1000);
-                            } while (hs.contains(Cuid));
-
-                            int Caid = rn.nextInt(1000);
-
-                            if (hs.add(Cuid)) {
-                                System.out.println("Assuming you have 1000rs in Account ");
-
-                                // ✅ FILE APPEND FIX
-                                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
-                                    bw.newLine();
-                                    bw.write(Cuid + "," + Caid + "," + Cname + "," + Cpass + ",1000");
-                                    id = 0;
-                                    pwd = 0;
-                                }
-
-                                hm.put(Cuid, new Current(Cuid, Caid, Cname, Cpass, 1000));
-                                System.out.println("Account Created Successfully. Your ID is " + Cuid);
+                            // ✅ FILE APPEND FIX
+                            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
+                                bw.newLine();
+                                bw.write(Cuid + "," + Caid + "," + Cname + "," + Cpass + ",1000");
                             }
-                        }
 
-                        default -> System.out.println("Please Choose From the below Options ");
+                            hm.put(Cuid, new Current(Cuid, Caid, Cname, Cpass, 1000));
+                            System.out.println("Account Created Successfully. Your ID is " + Cuid);
+                        }
                     }
+                    case (3) -> {
+                        saveAllUsers(hm);
+                        System.out.println("You are exiting Bye Bye ");
+                    }
+                    default -> throw new AssertionError();
                 }
 
             } catch (InputMismatchException ime) {
                 System.out.println("Please enter numbers only");
                 sc.nextLine(); // flush
-                id = 0;
-                pwd = 0;
             } catch (IOException ie) {
                 System.out.println("IO Exception in Menu " + ie);
             }

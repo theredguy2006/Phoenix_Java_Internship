@@ -74,7 +74,7 @@ public class Current  {
                     case (1) -> {
                         Main.sc.nextLine();
                         System.out.println("Change Your Name  ");
-                        String n = Main.sc.next();
+                        String n = Main.sc.nextLine();
                         setName(n);
                     }
                     case (2) -> {
@@ -97,6 +97,7 @@ public class Current  {
             } catch (InputMismatchException ie) {
                 System.out.println("Please Enter Proper Responses " + ie);
                 ie.getStackTrace();
+                Main.sc.nextLine();
             }
 
         } while (um != 5);
