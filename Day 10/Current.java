@@ -1,5 +1,4 @@
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Current {
     @SuppressWarnings("FieldMayBeFinal")
@@ -11,7 +10,6 @@ public class Current {
     private String Name;
     @SuppressWarnings("FieldMayBeFinal")
     private int pwd;
-    static Scanner sc = new Scanner(System.in);
 
     public void setBalance(double balance) {
         this.balance = balance;
@@ -70,17 +68,17 @@ public class Current {
                 System.out.println("Press 3.) Check Your Balance ");
                 System.out.println("Press 4.) Check Your Account Id ");
                 System.out.println("Press 5.) To go Back  ");
-                um = sc.nextInt();
+                um = Main.sc.nextInt();
                 switch (um) {
                     case (1) -> {
-                        sc.nextLine();
+                        Main.sc.nextLine();
                         System.out.println("Change Your Name  ");
-                        String n = sc.next();
+                        String n = Main.sc.next();
                         setName(n);
                     }
                     case (2) -> {
                         System.out.println("Change Your Password ");
-                        int pd = sc.nextInt();
+                        int pd = Main.sc.nextInt();
                         setPwd(pd);
                     }
                     case (3) -> {

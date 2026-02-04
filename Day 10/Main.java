@@ -55,8 +55,6 @@ public class Main {
                             }
                         });
                         bank.Bmenu();
-
-                        bank.Bmenu();
                     } else {
                         System.out.println("Invalid Password");
                         // id = 0;
@@ -78,6 +76,7 @@ public class Main {
                         case 3 -> {
                             saveAllUsers(hm);
                             System.out.println("You are exiting Bye Bye ");
+                            break;
                         }
 
                         case 2 -> {
@@ -120,8 +119,10 @@ public class Main {
                 }
 
             } catch (InputMismatchException ime) {
-                System.out.println("Input Mismatch Error ");
-                sc.nextLine();
+                System.out.println("Please enter numbers only");
+                sc.nextLine(); // flush
+                id = 0;
+                pwd = 0;
             } catch (IOException ie) {
                 System.out.println("IO Exception in Menu " + ie);
             }
