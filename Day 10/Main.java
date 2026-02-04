@@ -99,7 +99,7 @@ public class Main {
                         saveAllUsers(hm);
                         System.out.println("You are exiting Bye Bye ");
                     }
-                    default -> throw new AssertionError();
+                    default -> System.out.println("Enter from the given Options ");
                 }
 
             } catch (InputMismatchException ime) {

@@ -76,6 +76,10 @@ public class Bank implements Transactable {
     }
 
     void viewTransactionHistory(Current user) {
+        if (!f.exists() || f.length() == 0) {
+            System.out.println("You have no transaction history yet.");
+            return;
+        }
         try {
             if (f.exists()) {
                 try (BufferedReader br = new BufferedReader(new FileReader(f))) {
@@ -101,7 +105,7 @@ public class Bank implements Transactable {
         if (operation) {
             try {
                 try (BufferedWriter br = new BufferedWriter(new FileWriter(f, true))) {
-                    br.write(amount + " Amount Withdrawed at " + LocalDateTime.now() + "Updated Amount is "
+                    br.write(amount + " Amount Withdrawed at " + LocalDateTime.now() + " Updated Amount is "
                             + user.getBalance());
                     br.newLine();
                 }
@@ -129,9 +133,19 @@ public class Bank implements Transactable {
     @Override
     public void withdraw() {
         System.out.println("Enter Amount of Money You Want To Withdraw ");
+        System.out.println("Enter 0 to Cancel ");
         double withDraw = Main.sc.nextDouble();
+        if (withDraw == 0) {
+            return;
+        }
+        if (withDraw < 0) {
+            System.out.println("Press 2 to Deposit instead ");
+            return;
+        }
         if (user.getBalance() < withDraw) {
             System.out.println("Insufficient Balance Please Try Again ");
+            System.out.println("Your Balance is  " + user.getBalance() + " You are trying to withdraw " + withDraw);
+            System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
         } else if ((user.getBalance() - withDraw) < 1000) {
             System.out.println("Your account Balance cannot be less than 1000rs ");
             System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
@@ -149,7 +163,15 @@ public class Bank implements Transactable {
     @Override
     public void deposit() {
         System.out.println("Enter Amount of Money You Want To Deposit ");
+        System.out.println("Enter zero to exit ");
         double depo = Main.sc.nextDouble();
+        if (depo == 0) {
+            return;
+        }
+        if (depo < 0) {
+            System.out.println("Press 1 to withdraw instead ");
+            return;
+        }
         System.out.println("Previous Balance in Your Account " + user.getBalance());
         user.setBalance(depo + user.getBalance());
         System.out.println("Current/updated Balance in Account " + user.getBalance());
