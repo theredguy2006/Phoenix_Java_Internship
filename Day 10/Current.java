@@ -1,7 +1,6 @@
 import java.util.InputMismatchException;
 
-
-public class Current  {
+public class Current {
     @SuppressWarnings("FieldMayBeFinal")
     private int userID;
     private int accID;
@@ -11,15 +10,20 @@ public class Current  {
     private String Name;
     @SuppressWarnings("FieldMayBeFinal")
     private int pwd;
+    String accType;
 
     public void setBalance(double balance) {
         this.balance = balance;
     }
 
+    public String getAccountType() {
+        return "current";
+    }
+
     @Override
     public String toString() {
         return "Current [userID=" + userID + ", accID=" + accID + ", balance=" + balance + ", Name=" + Name + ", pwd="
-                + pwd + "]";
+                + pwd + " accountType " + accType + "]";
     }
 
     public Current(int userID, int accID, String name, int pwd2, double balance) {
@@ -28,6 +32,7 @@ public class Current  {
         Name = name;
         this.pwd = pwd2;
         this.balance = balance;
+        this.accType = "current";
     }
 
     public int getUserID() {
@@ -68,6 +73,7 @@ public class Current  {
                 System.out.println("Press 2.) Change Your Password   ");
                 System.out.println("Press 3.) Check Your Balance ");
                 System.out.println("Press 4.) Check Your Account Id ");
+                System.out.println("Press 5.) To View Your Account Details  ");
                 System.out.println("Press 5.) To go Back  ");
                 um = Main.sc.nextInt();
                 switch (um) {
@@ -89,6 +95,9 @@ public class Current  {
                         System.out.println("Your Account Id is " + getAccID());
                     }
                     case (5) -> {
+                        System.out.println(toString());
+                    }
+                    case (6) -> {
                         System.out.println("You are going back ");
                         return;
                     }
@@ -100,7 +109,7 @@ public class Current  {
                 Main.sc.nextLine();
             }
 
-        } while (um != 5);
+        } while (um != 6);
     }
 
     public void setAccID(int accID) {
@@ -109,11 +118,24 @@ public class Current  {
 
 }
 
-@SuppressWarnings("unused")
 class Savings extends Current {
 
     public Savings(int userID, int accID, String name, int pwd2, double balance) {
         super(userID, accID, name, pwd2, balance);
+        accType = "savings";
     }
+
+    @Override
+    public String getAccountType() {
+        return "savings";
+    }
+
+    @Override
+    public String toString() {
+        return "Savings [userID=" + getUserID() + ", accID=" + getAccID() + ", balance=" + getBalance() + ", Name=" + getName() + ", pwd="
+                + getPwd() + " accountType " + getAccountType() + "]";
+        
+    }
+
 
 }

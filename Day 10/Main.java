@@ -67,6 +67,7 @@ public class Main {
                     }
                     case (2) -> {
 
+                        sc.nextLine();
                         System.out.println("Please Enter Your Name ");
                         String Cname = sc.nextLine();
 
@@ -88,11 +89,34 @@ public class Main {
                             // ✅ FILE APPEND FIX
                             try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
                                 bw.newLine();
-                                bw.write(Cuid + "," + Caid + "," + Cname + "," + Cpass + ",1000");
+                                System.out.println("Do you want a Current Account ");
+                                System.out.println("Press 1 for Yes  ");
+                                System.out.println("Press 0 to Exit and Ant other digit to choose savings account ");
+                                int temp = sc.nextInt();
+                                switch (temp) {
+                                    case 0 -> {
+                                        continue;
+                                    }
+                                    case 1 -> {
+                                        bw.write(Cuid + "," + Caid + "," + Cname + "," + Cpass + ",1000," + "Current");
+                                        hm.put(Cuid, new Current(Cuid, Caid, Cname, Cpass, 1000));
+                                    }
+                                    default -> {
+                                        bw.write(Cuid + "," + Caid + "," + Cname + "," + Cpass + ",1000," + "Savings");
+                                        hm.put(Cuid, new Savings(Cuid, Caid, Cname, Cpass, 1000));
+                                    }
+                                }
+                                System.out.println("Account Created Successfully. Your ID is " + Cuid);
+                            } catch (IOException ie) {
+                                System.out.println("IO Exception in Menu while registering " + ie);
+                                ie.getStackTrace();
+                                sc.nextLine();
+                            } catch (InputMismatchException ime) {
+                                System.out.println("Please Enter Proper Values ");
+                                System.out.println("Input mismatch Exception in Menu while registering " + ime);
+                                sc.nextLine();
                             }
 
-                            hm.put(Cuid, new Current(Cuid, Caid, Cname, Cpass, 1000));
-                            System.out.println("Account Created Successfully. Your ID is " + Cuid);
                         }
                     }
                     case (3) -> {
@@ -123,9 +147,15 @@ public class Main {
                 int accID = Integer.parseInt(words[1]);
                 int pwd = Integer.parseInt(words[3]);
                 double balance = Double.parseDouble(words[4]);
+                String acType = words[5];
 
                 if (hs.add(uID)) {
-                    hm.put(uID, new Current(uID, accID, words[2], pwd, balance));
+                    if (acType.equalsIgnoreCase("savings")) {
+                        hm.put(uID, new Savings(uID, accID, words[2], pwd, balance));
+                    }
+                    if (acType.equalsIgnoreCase("current")) {
+                        hm.put(uID, new Current(uID, accID, words[2], pwd, balance));
+                    }
                 } else {
                     System.out.println("There are Multiple Users with the same ID Please Debug them.");
                 }
@@ -148,13 +178,14 @@ public class Main {
 
     static void saveAllUsers(HashMap<Integer, Current> hm) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-            for (Current c : hm.values()) {
+            for (Current c : hm.values()) { // I know this is error but can't think of stuff.
                 bw.write(
                         c.getUserID() + "," +
                                 c.getAccID() + "," +
                                 c.getName() + "," +
                                 c.getPwd() + "," +
-                                c.getBalance());
+                                c.getBalance() + "," +
+                                c.getAccountType());
                 bw.newLine();
             }
         }

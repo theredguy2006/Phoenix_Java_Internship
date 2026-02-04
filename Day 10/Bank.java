@@ -36,7 +36,6 @@ public class Bank implements Transactable {
                 System.out.println("Press 1.) Withdraw Money  ");
                 System.out.println("Press 2.) Deposit Money  ");
                 System.out.println("Press 3.) View Your Transaction History  ");
-                // System.out.println("Press 4.) Print Your Transaction History ");
                 System.out.println("Press 4.) Peform User Based Operations ");
                 System.out.println("Press 5.) Logout ");
                 bm = Main.sc.nextInt();
@@ -105,7 +104,7 @@ public class Bank implements Transactable {
         if (operation) {
             try {
                 try (BufferedWriter br = new BufferedWriter(new FileWriter(f, true))) {
-                    br.write(amount + " Amount Withdrawed at " + LocalDateTime.now() + " Updated Amount is "
+                    br.write(amount + " Amount Withdrawed at " + LocalDateTime.now() + "Updated Amount is "
                             + user.getBalance());
                     br.newLine();
                 }
@@ -139,23 +138,30 @@ public class Bank implements Transactable {
             return;
         }
         if (withDraw < 0) {
-            System.out.println("Press 2 to Deposit instead ");
+            System.out.println("Press 2 to withdraw instead ");
             return;
         }
-        if (user.getBalance() < withDraw) {
-            System.out.println("Insufficient Balance Please Try Again ");
-            System.out.println("Your Balance is  " + user.getBalance() + " You are trying to withdraw " + withDraw);
-            System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
-        } else if ((user.getBalance() - withDraw) < 1000) {
-            System.out.println("Your account Balance cannot be less than 1000rs ");
-            System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
+        if (user.accType.equalsIgnoreCase("Current")) {
+            if (user.getBalance() < withDraw) {
+                System.out.println("Insufficient Balance Please Try Again ");
+                System.out.println("Your Balance is  " + user.getBalance() + " You are trying to withdraw " + withDraw);
+                System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
+            } else if ((user.getBalance() - withDraw) < 1000) {
+                System.out.println("Your account Balance cannot be less than 1000rs ");
+                System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
+            } else {
+                System.out.println("Previous Balance in Your Account " + user.getBalance());
+                user.setBalance(user.getBalance() - withDraw);
+                System.out.println("Current/updated Balance in Account " + user.getBalance());
+                operation = true;
+                autoSave.run();
+                printTransactionHistory(user, operation, withDraw);
+            }
+        } else if (user.accType.equalsIgnoreCase("Savings")) {
+            System.out.println("Savings Block Accesed for Withdraw  ");
+            System.out.println("More features coming ");
         } else {
-            System.out.println("Previous Balance in Your Account " + user.getBalance());
-            user.setBalance(user.getBalance() - withDraw);
-            System.out.println("Current/updated Balance in Account " + user.getBalance());
-            operation = true;
-            autoSave.run();
-            printTransactionHistory(user, operation, withDraw);
+            System.out.println("Some unexpected stuff happening with Withdraw please de bug");
         }
 
     }
@@ -172,12 +178,20 @@ public class Bank implements Transactable {
             System.out.println("Press 1 to withdraw instead ");
             return;
         }
-        System.out.println("Previous Balance in Your Account " + user.getBalance());
-        user.setBalance(depo + user.getBalance());
-        System.out.println("Current/updated Balance in Account " + user.getBalance());
-        operation = false;
-        autoSave.run();
-        printTransactionHistory(user, operation, depo);
+        if (user.accType.equalsIgnoreCase("Current")) {
+
+            System.out.println("Previous Balance in Your Account " + user.getBalance());
+            user.setBalance(depo + user.getBalance());
+            System.out.println("Current/updated Balance in Account " + user.getBalance());
+            operation = false;
+            autoSave.run();
+            printTransactionHistory(user, operation, depo);
+        } else if (user.accType.equalsIgnoreCase("Savings")) {
+            System.out.println("Savings Block Accesed for Deposit ");
+            System.out.println("More features coming ");
+        } else {
+            System.out.println("Some unexpected stuff happening with deposit please de bug");
+        }
 
     }
 
