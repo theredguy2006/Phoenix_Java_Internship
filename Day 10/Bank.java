@@ -158,8 +158,7 @@ public class Bank implements Transactable {
                 printTransactionHistory(user, operation, withDraw);
             }
         } else if (user.accType.equalsIgnoreCase("Savings")) {
-            System.out.println("Savings Block Accesed for Withdraw  ");
-            System.out.println("More features coming ");
+            sWithdraw();
         } else {
             System.out.println("Some unexpected stuff happening with Withdraw please de bug");
         }
@@ -187,12 +186,22 @@ public class Bank implements Transactable {
             autoSave.run();
             printTransactionHistory(user, operation, depo);
         } else if (user.accType.equalsIgnoreCase("Savings")) {
-            System.out.println("Savings Block Accesed for Deposit ");
-            System.out.println("More features coming ");
+
+            sDeposit();
         } else {
             System.out.println("Some unexpected stuff happening with deposit please de bug");
         }
 
+    }
+
+    void sDeposit() {
+        System.out.println("Savings Block Accesed for Deposit ");
+        System.out.println("More features coming ");
+    }
+
+    void sWithdraw() {
+        System.out.println("Savings Block Accesed for Withdraw  ");
+        System.out.println("More features coming ");
     }
 
 }
