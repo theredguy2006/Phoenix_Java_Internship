@@ -14,11 +14,8 @@ import java.util.Scanner;
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static File f = new File("user.txt");
-    static Bank bank;
-
     public static void main(String[] args) {
         HashSet<Integer> hs = new HashSet<>(); // For Account Id
-        bank = new Bank();
         HashMap<Integer, Current> hm = new HashMap<>();
         initializeUsers(hs, hm);
         menu(hs, hm);
@@ -49,7 +46,7 @@ public class Main {
                     if (user != null && user.getPwd() == pwd) {
                         System.out.println("Login Successful ");
                         System.out.println("Details of Your account " + user);
-                        // menu = 3;
+                        Bank bank=new Bank(user);
                         bank.Bmenu();
                     } else {
                         System.out.println("Invalid Password");

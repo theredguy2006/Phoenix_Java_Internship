@@ -2,12 +2,20 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Current {
+    @SuppressWarnings("FieldMayBeFinal")
     private int userID;
     private int accID;
+    @SuppressWarnings("FieldMayBeFinal")
     private double balance;
+    @SuppressWarnings("FieldMayBeFinal")
     private String Name;
+    @SuppressWarnings("FieldMayBeFinal")
     private int pwd;
     static Scanner sc = new Scanner(System.in);
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
     @Override
     public String toString() {
@@ -43,6 +51,7 @@ public class Current {
         return pwd;
     }
 
+    @SuppressWarnings("unused")
     void Umenu() {
         int um = 0;
         do {
@@ -73,8 +82,13 @@ public class Current {
         } while (um != 5);
     }
 
+    public void setAccID(int accID) {
+        this.accID = accID;
+    }
+
 }
 
+@SuppressWarnings("unused")
 class Savings extends Current {
 
     public Savings(int userID, int accID, String name, int pwd2, double balance) {
