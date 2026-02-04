@@ -26,8 +26,8 @@ public class Main {
     @SuppressWarnings("UnnecessaryContinue")
     static void menu(HashSet<Integer> hs, HashMap<Integer, Current> hm) {
         int menu = 0;
-        int id = 0;
-        int pwd = 0;
+        int id;
+        int pwd ;
 
         do {
             try {
