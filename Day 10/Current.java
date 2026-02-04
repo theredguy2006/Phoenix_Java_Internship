@@ -1,6 +1,7 @@
 import java.util.InputMismatchException;
 
-public class Current {
+
+public class Current  {
     @SuppressWarnings("FieldMayBeFinal")
     private int userID;
     private int accID;

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 
-public class Bank {
+public class Bank implements Transactable {
     Runnable autoSave;
     // static Scanner sc = new Scanner(System.in);
     Current user;
@@ -42,33 +42,10 @@ public class Bank {
                 bm = Main.sc.nextInt();
                 switch (bm) {
                     case (1) -> {
-                        System.out.println("Enter Amount of Money You Want To Withdraw ");
-                        double withDraw = Main.sc.nextDouble();
-                        if (user.getBalance() < withDraw) {
-                            System.out.println("Insufficient Balance Please Try Again ");
-                        } else if ((user.getBalance() - withDraw) < 1000) {
-                            System.out.println("Your account Balance cannot be less than 1000rs ");
-                            System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
-                        } else {
-                            System.out.println("Previous Balance in Your Account " + user.getBalance());
-                            user.setBalance(user.getBalance() - withDraw);
-                            System.out.println("Current/updated Balance in Account " + user.getBalance());
-                            operation = true;
-                            autoSave.run();
-                            printTransactionHistory(user, operation, withDraw);
-                        }
-
+                        withdraw();
                     }
                     case (2) -> {
-                        System.out.println("Enter Amount of Money You Want To Deposit ");
-                        double depo = Main.sc.nextDouble();
-                        System.out.println("Previous Balance in Your Account " + user.getBalance());
-                        user.setBalance(depo + user.getBalance());
-                        System.out.println("Current/updated Balance in Account " + user.getBalance());
-                        operation = false;
-                        autoSave.run();
-                        printTransactionHistory(user, operation, depo);
-
+                        deposit();
                     }
                     case (3) -> {
                         System.out.println("Your Transaction History ");
@@ -148,4 +125,43 @@ public class Bank {
 
     }
 
+    @Override
+    public void withdraw() {
+        System.out.println("Enter Amount of Money You Want To Withdraw ");
+        double withDraw = Main.sc.nextDouble();
+        if (user.getBalance() < withDraw) {
+            System.out.println("Insufficient Balance Please Try Again ");
+        } else if ((user.getBalance() - withDraw) < 1000) {
+            System.out.println("Your account Balance cannot be less than 1000rs ");
+            System.out.println("The Maximum Amonut you can withdraw is  " + (user.getBalance() - 1000));
+        } else {
+            System.out.println("Previous Balance in Your Account " + user.getBalance());
+            user.setBalance(user.getBalance() - withDraw);
+            System.out.println("Current/updated Balance in Account " + user.getBalance());
+            operation = true;
+            autoSave.run();
+            printTransactionHistory(user, operation, withDraw);
+        }
+
+    }
+
+    @Override
+    public void deposit() {
+        System.out.println("Enter Amount of Money You Want To Deposit ");
+        double depo = Main.sc.nextDouble();
+        System.out.println("Previous Balance in Your Account " + user.getBalance());
+        user.setBalance(depo + user.getBalance());
+        System.out.println("Current/updated Balance in Account " + user.getBalance());
+        operation = false;
+        autoSave.run();
+        printTransactionHistory(user, operation, depo);
+
+    }
+
+}
+
+interface Transactable {
+    void deposit();
+
+    void withdraw();
 }
