@@ -35,6 +35,14 @@ public class Current {
         return userID;
     }
 
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public void setPwd(int pwd) {
+        this.pwd = pwd;
+    }
+
     public int getAccID() {
         return accID;
     }
@@ -51,7 +59,6 @@ public class Current {
         return pwd;
     }
 
-    @SuppressWarnings("unused")
     void Umenu() {
         int um = 0;
         do {
@@ -60,17 +67,31 @@ public class Current {
                 System.out.println("Which Operations You want to perform ");
                 System.out.println("Press 1.) Change Your Name ");
                 System.out.println("Press 2.) Change Your Password   ");
-                System.out.println("Press 6.) Logout ");
+                System.out.println("Press 3.) Check Your Balance ");
+                System.out.println("Press 4.) Check Your Account Id ");
+                System.out.println("Press 5.) To go Back  ");
                 um = sc.nextInt();
                 switch (um) {
                     case (1) -> {
-                        System.out.println("Enter Amount of Money You Want To Withdraw ");
+                        sc.nextLine();
+                        System.out.println("Change Your Name  ");
+                        String n = sc.next();
+                        setName(n);
                     }
                     case (2) -> {
-                        System.out.println("Enter Amount of Money You Want To Deposit ");
+                        System.out.println("Change Your Password ");
+                        int pd = sc.nextInt();
+                        setPwd(pd);
                     }
-                    case (6) -> {
-                        System.out.println("You are Logging out. ");
+                    case (3) -> {
+                        System.out.println("Your account Balance is " + getBalance());
+                    }
+                    case (4) -> {
+                        System.out.println("Your Account Id is " + getAccID());
+                    }
+                    case (5) -> {
+                        System.out.println("You are going back ");
+                        return;
                     }
                     default -> System.out.println("Enter From Given Values ");
                 }

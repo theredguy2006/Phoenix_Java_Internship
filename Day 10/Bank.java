@@ -1,26 +1,38 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Bank {
+    Runnable autoSave;
     static Scanner sc = new Scanner(System.in);
     Current user;
-    String fileName = Integer.toString(user.getAccID()) + "_" + Integer.toString(user.getUserID())
-            + "passbook.txt";
-    File f = new File("Transactions/" + fileName);
-    boolean operation = true; // To check while printing whether it is for deposti or withdraw.
+
+    boolean operation; // To check while printing whether it is for deposti or withdraw.
     // true for withdraw
     // false for deposit
+    File f;
+    String fileName;
 
-    public Bank(Current user) {
+    public Bank(Current user, Runnable autoSave) {
         this.user = user;
+        this.autoSave = autoSave;
+        this.fileName = Integer.toString(user.getAccID()) + "_" + Integer.toString(user.getUserID())
+                + "passbook.txt";
+        new File("Transactions").mkdirs();
+
+        this.f = new File("Transactions/" + fileName);
     }
 
     void Bmenu() {
         int bm = 0;
         do {
             try {
-
                 System.out.println("Which Operations You want to perform ");
                 System.out.println("Press 1.) Withdraw Money  ");
                 System.out.println("Press 2.) Deposit Money  ");
@@ -42,19 +54,21 @@ public class Bank {
                             System.out.println("Previous Balance in Your Account " + user.getBalance());
                             user.setBalance(user.getBalance() - withDraw);
                             System.out.println("Current/updated Balance in Account " + user.getBalance());
-                            printTransactionHistory(user, operation);
+                            operation = true;
+                            autoSave.run();
+                            printTransactionHistory(user, operation, withDraw);
                         }
 
                     }
                     case (2) -> {
                         System.out.println("Enter Amount of Money You Want To Deposit ");
                         double depo = sc.nextDouble();
-                        depo += user.getBalance();
                         System.out.println("Previous Balance in Your Account " + user.getBalance());
-                        user.setBalance(depo);
+                        user.setBalance(depo + user.getBalance());
                         System.out.println("Current/updated Balance in Account " + user.getBalance());
                         operation = false;
-                        printTransactionHistory(user, operation);
+                        autoSave.run();
+                        printTransactionHistory(user, operation, depo);
 
                     }
                     case (3) -> {
@@ -87,21 +101,49 @@ public class Bank {
     void viewTransactionHistory(Current user) {
         try {
             if (f.exists()) {
+                try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                }
+
             } else {
                 System.out.println("Debuggin Messgae Check that the file is there or the syntax is working. ");
             }
 
-        } catch (Exception e) {
-            // TODO: handle exception
+        } catch (IOException e) {
+            System.out.println("IO Exception in Bank's Print History Method " + e);
+            e.getStackTrace();
         }
 
     }
 
-    void printTransactionHistory(Current user, boolean operation) {
+    void printTransactionHistory(Current user, boolean operation, double amount) {
         // If true than the operation was withdraw else false.
         if (operation) {
+            try {
+                BufferedWriter br = new BufferedWriter(new FileWriter(f, true));
+                br.write(amount + " Amount Withdrawed at " + LocalDateTime.now() + "Updated Amount is "
+                        + user.getBalance());
+                br.newLine();
+                br.close();
+            } catch (IOException e) {
+                System.out.println("IO Exception in Bank's Print History Method " + e);
+                e.getStackTrace();
+            }
 
         } else {
+            try {
+                BufferedWriter br = new BufferedWriter(new FileWriter(f, true));
+                br.write(amount + " Amount Deposited  at " + LocalDateTime.now() + "Updated Amount is "
+                        + user.getBalance());
+                br.newLine();
+                br.close();
+            } catch (IOException e) {
+                System.out.println("IO Exception in Bank's Print History Method " + e);
+                e.getStackTrace();
+            }
 
         }
 
