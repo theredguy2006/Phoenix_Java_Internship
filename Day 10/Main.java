@@ -23,11 +23,10 @@ public class Main {
         sc.close();
     }
 
-    @SuppressWarnings("UnnecessaryContinue")
     static void menu(HashSet<Integer> hs, HashMap<Integer, Current> hm) {
         int menu = 0;
         int id;
-        int pwd ;
+        int pwd;
 
         do {
             try {

@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 
+interface Transactable {
+    void deposit();
+
+    void withdraw();
+}
+
 public class Bank implements Transactable {
     Runnable autoSave;
     // static Scanner sc = new Scanner(System.in);
@@ -21,7 +27,7 @@ public class Bank implements Transactable {
     public Bank(Current user, Runnable autoSave) {
         this.user = user;
         this.autoSave = autoSave;
-        this.fileName = Integer.toString(user.getAccID()) + "_" + Integer.toString(user.getUserID())
+        this.fileName = user.getAccID() + "_" + user.getUserID()
                 + "passbook.txt";
         new File("Transactions").mkdirs();
 
@@ -204,10 +210,4 @@ public class Bank implements Transactable {
         System.out.println("More features coming ");
     }
 
-}
-
-interface Transactable {
-    void deposit();
-
-    void withdraw();
 }
